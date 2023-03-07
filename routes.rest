@@ -1,0 +1,105 @@
+
+
+// LOCALHOST
+### Get all 
+GET http://localhost:8080/
+###Get by id 
+GET http://localhost:8080/
+### Create 
+POST http://localhost:8080/ HTTP/1.1
+content-type: application/json
+
+{
+     
+  }
+
+### PUT 
+PUT http://localhost:8080/ HTTP/1.1
+content-type: application/json
+
+{
+
+  }
+
+### DELETE
+DELETE http://localhost:8080/ HTTP/1.1
+
+// PRODUCTION Deploy
+### Get all 
+GET 
+
+###Get by id 
+GET
+### Create 
+POST  HTTP/1.1
+content-type: application/json
+
+{
+  
+  }
+
+### PUT 
+PUT  HTTP/1.1
+content-type: application/json
+
+{
+  
+  }
+
+### DELETE 
+DELETE  HTTP/1.1
+
+
+
+// LOCALHOST
+### Get all 
+GET http://localhost:8080/
+###Get by id 
+GET http://localhost:8080/
+### Create
+POST http://localhost:8080/ HTTP/1.1
+content-type: application/json
+
+{
+  
+  }
+
+### PUT 
+PUT http://localhost:8080/ HTTP/1.1
+content-type: application/json
+
+{
+     
+  }
+
+### DELETE  
+DELETE http://localhost:8080/ HTTP/1.1
+
+
+// PRODUCTION Deploy
+### Get all 
+GET 
+
+###Get by id 
+GET 
+### Create 
+POST  HTTP/1.1
+content-type: application/json
+
+{
+ 
+  }
+
+### PUT 
+PUT  HTTP/1.1
+content-type: application/json
+
+{
+ 
+  }
+
+### DELETE 
+DELETE  HTTP/1.1
+
+
+

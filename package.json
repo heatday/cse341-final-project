@@ -1,0 +1,38 @@
+{
+  "name": "rest-practice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+    "swagger": "node ./swagger.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-graphql": "^0.12.0",
+    "express-openid": "^1.0.8",
+    "express-openid-connect": "^2.12.0",
+    "graphql": "^16.6.0",
+    "mongodb": "^4.4.0",
+    "mongoose": "^6.2.4",
+    "swagger-autogen": "^2.23.0",
+    "swagger-ui": "^4.15.5",
+    "swagger-ui-express": "^4.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.31.11",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.5.1"
+  }
+}
