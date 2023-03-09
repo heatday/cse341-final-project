@@ -34,8 +34,9 @@ const uploadPlant = async (req, res) => {
         description: 'The plant description to add to the database.',
         schema: {
           $name: 'Plant Name',
-          $category: 'Plant Category',
-          $description: 'A lengthy description.',
+          $description: 'Plant description',
+          $type of tree: ' the name of the type of tree.',
+          $gender of tree: ' the name of the gender of tree.',
           tips: ['tip 1', 'tip 2'],
           optimalSpacing: 200,
           optimalDirt: 'Dirt properties and conditions',
@@ -60,8 +61,9 @@ const updatePlant = async (req, res) => {
         description: 'The updated plant description.',
         schema: {
           $name: 'Plant Name',
-          $category: 'Plant Category',
-          $description: 'A lengthy description.',
+          $description: 'Plant description',
+          $type of tree: ' the name of the type of tree.',
+          $gender of tree: ' the name of the gender of tree.',
           tips: ['tip 1', 'tip 2'],
           optimalSpacing: 200,
           optimalDirt: 'Dirt properties and conditions',
