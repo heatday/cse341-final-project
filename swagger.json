@@ -1,21 +1,654 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "My API",
-    "description": "Temple API",
+    "title": "Garden Forum API",
+    "description": "An API for accessing a public gardening forum and plant information database.",
     "version": "1.0.0"
   },
   "host": ".onrender.com",
   "basePath": "/",
+  "tags": [
+    {
+      "name": "Forums",
+      "description": "A suite of APIs for accessing and managing forum threads."
+    },
+    {
+      "name": "Plant Information",
+      "description": "A suite of APIs for accessing and managing plant information."
+    },
+    {
+      "name": "Users",
+      "description": "A suite of APIs for managing user accounts and viewing public user information."
+    }
+  ],
   "schemes": [
     "https"
   ],
+  "securityDefinitions": {
+    "oAuth": {
+      "type": "oauth2",
+      "description": "The authorization method used by this backend runs on Auth0.",
+      "authorizationUrl": "https://RENDER-URL-HERE/login",
+      "flow": "authorizationCode"
+    }
+  },
   "paths": {
-    "/api-docs": {
+    "/forum/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Forums"
+        ],
+        "description": "Returns all forum posts from the database.",
         "parameters": [],
         "responses": {}
+      },
+      "post": {
+        "tags": [
+          "Forums"
+        ],
+        "description": "Posts a new forum thread in the database.",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "The new forum thread to add to the database.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Forum Name"
+                },
+                "category": {
+                  "type": "string",
+                  "example": "Forum Category"
+                },
+                "desc": {
+                  "type": "string",
+                  "example": "A lengthy forum post."
+                },
+                "comments": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                }
+              },
+              "required": [
+                "title",
+                "category",
+                "desc",
+                "comments"
+              ]
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "oAuth": []
+          }
+        ]
+      }
+    },
+    "/forum/{forumId}": {
+      "get": {
+        "tags": [
+          "Forums"
+        ],
+        "description": "Returns one forum thread from the database.",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The forum ID for the database to retrieve"
+          }
+        ],
+        "responses": {}
+      },
+      "put": {
+        "tags": [
+          "Forums"
+        ],
+        "description": "Updates a forum post in the database.",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The forum post ID for the database to update."
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "The new forum thread to add to the database.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Forum Name"
+                },
+                "category": {
+                  "type": "string",
+                  "example": "Forum Category"
+                },
+                "desc": {
+                  "type": "string",
+                  "example": "A lengthy forum post."
+                }
+              },
+              "required": [
+                "title",
+                "category",
+                "desc"
+              ]
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "oAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Forums"
+        ],
+        "description": "Deletes a forum thread from the database.",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The forum thread ID for the database to delete."
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "oAuth": []
+          }
+        ]
+      }
+    },
+    "/forum/{forumId}/{commentId}": {
+      "get": {
+        "tags": [
+          "Forums"
+        ],
+        "description": "Returns one forum thread from the database.",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The forum ID for the database to retrieve"
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The comment ID for the database to retrieve"
+          }
+        ],
+        "responses": {}
+      },
+      "post": {
+        "tags": [
+          "Forums"
+        ],
+        "description": "Posts a comment in a forum thread in the database.",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The forum ID to add the comment to."
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "The new comment to add to the forum thread.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comment": {
+                  "type": "string",
+                  "example": "A lengthy comment."
+                }
+              },
+              "required": [
+                "comment"
+              ]
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "oAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Forums"
+        ],
+        "description": "Posts a comment in a forum thread in the database.",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The forum ID the comment is part of."
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The comment ID for the database to edit."
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "The edited comment to update the forum thread.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comment": {
+                  "type": "string",
+                  "example": "An updated lengthy comment."
+                }
+              },
+              "required": [
+                "comment"
+              ]
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "oAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Forums"
+        ],
+        "description": "Deletes a comment from a forum thread.",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The forum ID the offending comment is part of."
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The comment ID for the database to delete."
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "oAuth": []
+          }
+        ]
+      }
+    },
+    "/plants/": {
+      "get": {
+        "tags": [
+          "Plant Information"
+        ],
+        "description": "Returns all plant descriptions from the database.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Plant Information"
+        ],
+        "description": "Stores a plant description in the database.",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "The plant description to add to the database.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Plant Name"
+                },
+                "category": {
+                  "type": "string",
+                  "example": "Plant Category"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "A lengthy description."
+                },
+                "tips": {
+                  "type": "array",
+                  "example": [
+                    "tip 1",
+                    "tip 2"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "optimalSpacing": {
+                  "type": "number",
+                  "example": 200
+                },
+                "optimalDirt": {
+                  "type": "string",
+                  "example": "Dirt properties and conditions"
+                },
+                "avgGrowHeight": {
+                  "type": "number",
+                  "example": 10
+                }
+              },
+              "required": [
+                "name",
+                "category",
+                "description"
+              ]
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "oAuth": []
+          }
+        ]
+      }
+    },
+    "/plants/{plantId}": {
+      "get": {
+        "tags": [
+          "Plant Information"
+        ],
+        "description": "Returns one plant description from the database.",
+        "parameters": [
+          {
+            "name": "plantId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The plant ID for the database to retrieve."
+          }
+        ],
+        "responses": {}
+      },
+      "put": {
+        "tags": [
+          "Plant Information"
+        ],
+        "description": "Updates a plant description in the database.",
+        "parameters": [
+          {
+            "name": "plantId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The plant description ID for the database to update."
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "The updated plant description.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Plant Name"
+                },
+                "category": {
+                  "type": "string",
+                  "example": "Plant Category"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "A lengthy description."
+                },
+                "tips": {
+                  "type": "array",
+                  "example": [
+                    "tip 1",
+                    "tip 2"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "optimalSpacing": {
+                  "type": "number",
+                  "example": 200
+                },
+                "optimalDirt": {
+                  "type": "string",
+                  "example": "Dirt properties and conditions"
+                },
+                "avgGrowHeight": {
+                  "type": "number",
+                  "example": 10
+                }
+              },
+              "required": [
+                "name",
+                "category",
+                "description"
+              ]
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "oAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Plant Information"
+        ],
+        "description": "Deletes a plant description from the database.",
+        "parameters": [
+          {
+            "name": "plantId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The plant description ID for the database to delete."
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "oAuth": []
+          }
+        ]
+      }
+    },
+    "/user/": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Returns the logged in user",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "oAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Creates a user account and stores it in the database. NOTE: Password and name will be authenticated using OpenIDConnect/Auth0. We will NOT store passwords in our database.",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "The user account information to add to the database.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "forumPosts": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                },
+                "comments": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                },
+                "userName": {
+                  "type": "string",
+                  "example": "username"
+                },
+                "bio": {
+                  "type": "string",
+                  "example": "A biography."
+                },
+                "joinDate": {
+                  "type": "number",
+                  "example": 0
+                }
+              },
+              "required": [
+                "forumPosts",
+                "comments",
+                "userName"
+              ]
+            }
+          }
+        ],
+        "responses": {}
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Updates the logged in user",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "The user account information to update in the database.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "forumPosts": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                },
+                "comments": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                },
+                "userName": {
+                  "type": "string",
+                  "example": "username"
+                },
+                "bio": {
+                  "type": "string",
+                  "example": "An updated biography."
+                }
+              },
+              "required": [
+                "forumPosts",
+                "comments",
+                "userName"
+              ]
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "oAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Deletes the logged in user from the database.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "oAuth": []
+          }
+        ]
+      }
+    },
+    "/user/{userId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Returns the public information available for a user.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "oAuth": []
+          }
+        ]
       }
     }
   }
