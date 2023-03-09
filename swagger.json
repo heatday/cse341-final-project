@@ -5,7 +5,7 @@
     "description": "An API for accessing a public gardening forum and plant information database.",
     "version": "1.0.0"
   },
-  "host": ".onrender.com",
+  "host": "cse341-final-project-26gf.onrender.com",
   "basePath": "/",
   "tags": [
     {
