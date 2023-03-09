@@ -27,7 +27,7 @@ const doc = {
       flow: 'authorizationCode'
     }
   },
-  host: '.onrender.com',
+  host: 'cse341-final-project-26gf.onrender.com',
   schemes: ['https'],
 };
 
