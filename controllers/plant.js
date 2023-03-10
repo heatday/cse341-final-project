@@ -6,7 +6,7 @@ const getAll = async (req, res) => {
     /*  #swagger.description = 'Returns all plant descriptions from the database.'
         #swagger.tags = ['Plant Information']
     */
-   const result = await mongodb.getDb().db().collection('plant').find();
+   const result = await mongodb.getDb().db().collection('plants').find();
    result.toArray().then((lists) => {
      res.setHeader('Content-Type', 'application/json');
      res.status(200).json(lists);
