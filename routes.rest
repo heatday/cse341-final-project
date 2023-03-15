@@ -79,7 +79,7 @@ content-type: application/json
   }
 
 ### DELETE  
-DELETE http://localhost:8080/ HTTP/1.1
+DELETE http://localhost:8080/plants/64112ec84d889e2883a4839f HTTP/1.1
 
 
 // PRODUCTION Deploy
