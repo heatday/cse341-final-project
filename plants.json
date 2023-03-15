@@ -2,26 +2,26 @@
     "Plant1": {
         "NamePlant": "Fir tree.",
         "Description": "This is the classic Christmas tree, it has a cone-shaped crown and can reach up to 60 meters high.",
-        "Type of tree": "vascular land plants.",
-        "gender of tree": "Pinaceae family."
+        "Type_of_tree": "vascular land plants.",
+        "gender_of_tree": "Pinaceae family."
     },
     "Plant2": {
         "NamePlant": "Avocado.",
         "Description": "This tree is native to Central America, and from it comes the famous and delicious fruit that bears its name.",
-        "Type of tree": "vascular land plants.",
-        "gender of tree": " Lauraceae family."
+        "Type_of_tree": "vascular land plants.",
+        "gender_of_tree": " Lauraceae family."
     },
     "Plant3": {
         "NamePlant": "Mosses.",
         "Description": "They were the first to colonize the terrestrial environment and, therefore, thanks to them, larger and more complex plants, such as vascular plants, were later able to appear and develop.",
-        "Type of tree": "non vascular plants.",
-        "gender of tree": "bryophyte family."
+        "Type_of_tree": "non vascular plants.",
+        "gender_of_tree": "bryophyte family."
     },
     "Plant4": {
         "NamePlant": "Hepatic.",
         "Description": "They are small plants, generally smaller than mosses. Its name comes from the 9th century, due to the shape of the gametophyte of some genera reminiscent of that of the liver.",
-        "Type of tree": "non vascular plants.",
-        "gender of tree": "Phylum family."
+        "Type_of_tree": "non vascular plants.",
+        "gender_of_tree": "Phylum family."
     }
   }
 
