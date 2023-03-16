@@ -1,6 +1,5 @@
 const plant = require('../models/plant')
 
-
 const getAll = async (req, res) => {
     /*  #swagger.description = 'Returns all plant descriptions from the database.'
         #swagger.tags = ['Plant Information']
@@ -23,7 +22,7 @@ const getOne = async (req, res) => {
     const plants = await plant.findById(req.params.plantId);
     if (!plants) {
       // 404  code for not existing
-      res.status(404).json({message: "Can't find the plant."});
+      res.status(404).json({message: "Unable to find plant."});
       return;
     }
     res.status(200).json(plants);
@@ -51,7 +50,7 @@ const uploadPlant = async (req, res) => {
           res.status(201).send(data);
         })
         .catch((err) => {
-          res.status(500).json({message: err.message || 'Error occured uploading plants.'});
+          res.status(500).json({message: err.message || 'An error occurred while uploading a plant description.'});
         });
       } catch (err) {
         //500 server error

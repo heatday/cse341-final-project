@@ -503,38 +503,26 @@
             "schema": {
               "type": "object",
               "properties": {
-                "forumPosts": {
-                  "type": "array",
-                  "example": [],
-                  "items": {}
-                },
-                "comments": {
-                  "type": "array",
-                  "example": [],
-                  "items": {}
-                },
-                "userName": {
+                "username": {
                   "type": "string",
                   "example": "username"
                 },
                 "bio": {
                   "type": "string",
                   "example": "A biography."
-                },
-                "joinDate": {
-                  "type": "number",
-                  "example": 0
                 }
               },
               "required": [
-                "forumPosts",
-                "comments",
-                "userName"
+                "username"
               ]
             }
           }
         ],
-        "responses": {}
+        "responses": {
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       },
       "put": {
         "tags": [
@@ -549,16 +537,6 @@
             "schema": {
               "type": "object",
               "properties": {
-                "forumPosts": {
-                  "type": "array",
-                  "example": [],
-                  "items": {}
-                },
-                "comments": {
-                  "type": "array",
-                  "example": [],
-                  "items": {}
-                },
                 "userName": {
                   "type": "string",
                   "example": "username"
@@ -569,14 +547,19 @@
                 }
               },
               "required": [
-                "forumPosts",
-                "comments",
                 "userName"
               ]
             }
           }
         ],
-        "responses": {},
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
         "security": [
           {
             "oAuth": []
@@ -589,7 +572,14 @@
         ],
         "description": "Deletes the logged in user from the database.",
         "parameters": [],
-        "responses": {},
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
         "security": [
           {
             "oAuth": []
@@ -597,7 +587,7 @@
         ]
       }
     },
-    "/user/{userId}": {
+    "/user/{username}": {
       "get": {
         "tags": [
           "Users"
@@ -605,13 +595,17 @@
         "description": "Returns the public information available for a user.",
         "parameters": [
           {
-            "name": "userId",
+            "name": "username",
             "in": "path",
             "required": true,
             "type": "string"
           }
         ],
-        "responses": {},
+        "responses": {
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
         "security": [
           {
             "oAuth": []
