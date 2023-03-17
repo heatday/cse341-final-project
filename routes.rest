@@ -2,23 +2,29 @@
 
 // LOCALHOST
 ### Get all 
-GET http://localhost:8080/
+GET http://localhost:8080/plants
 ###Get by id 
-GET http://localhost:8080/
+GET http://localhost:8080/plants/640a3c9a67cb0b0a64d63f6c
 ### Create 
-POST http://localhost:8080/ HTTP/1.1
+POST http://localhost:8080/plants HTTP/1.1
 content-type: application/json
 
 {
-     
+      "NamePlant": "Davallia",
+      "Description": "an native fern that grows to 0.6 m in height",
+      "Type_of_tree": "ephytic evergreen fern",
+      "gender_of_tree": "Davalliaceae Family"
   }
 
 ### PUT 
-PUT http://localhost:8080/ HTTP/1.1
+PUT http://localhost:8080/plants/64112ec84d889e2883a4839f HTTP/1.1
 content-type: application/json
 
 {
-
+      "NamePlant": "Davallia",
+      "Description": "an native fern that grows to 0.6 m in height",
+      "Type_of_tree": "ephytic evergreen fern",
+      "gender_of_tree": "Davalliaceae Family"
   }
 
 ### DELETE
@@ -73,7 +79,7 @@ content-type: application/json
   }
 
 ### DELETE  
-DELETE http://localhost:8080/ HTTP/1.1
+DELETE http://localhost:8080/plants/64112ec84d889e2883a4839f HTTP/1.1
 
 
 // PRODUCTION Deploy

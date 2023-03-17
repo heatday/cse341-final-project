@@ -4,7 +4,7 @@ const router = express.Router();
 const controller = require('../controllers/plant');
 
 router.get('/', controller.getAll);
-router.get('/:plantId', controller.getOne);
+router.get('/:plantid', controller.getOne);
 
 router.post('/', controller.uploadPlant);
 
