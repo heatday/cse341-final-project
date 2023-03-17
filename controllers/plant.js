@@ -1,7 +1,7 @@
 const { response } = require('express');
 const mongodb = require('../db/connect');
 const ObjectId = require('mongodb').ObjectId; 
-const {authSchema}= require('../helpers/validate_schema');
+
 
 
 const getAll = async (req, res) => {
