@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 });
 
 // Check our profile information when logged in
-app.get('/profile', requiresAuth(), (req, res) => {
+app.get('/myaccount', requiresAuth(), (req, res) => {
   console.log(JSON.stringify(req.oidc.user))
   res.send(JSON.stringify(req.oidc.user));
 }) 
