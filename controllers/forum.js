@@ -1,6 +1,3 @@
-// const { response } = require('express');
-// const mongodb = require('../db/connect');
-// const ObjectId = require('mongodb').ObjectId; 
 const forum = require('../models/forum')
 
 const getAll = async (req, res) => {
@@ -34,21 +31,32 @@ const getOne = async (req, res) => {
 const postForum = async (req, res) => {
   /*  #swagger.description = 'Posts a new forum thread in the database.'
       #swagger.tags = ['Forums']
+      #swagger.parameters['obj'] = {
+        in: 'body',
+        description: 'The new forum post to add to the database.',
+        schema: {
+          $title: 'A Title for the Forum',
+          $content: 'The forum post text.'
+        }
+      }
   */
   try {
-    if ( !req.body.Title || !req.body.Author ) {
+    if ( !req.body.title || !req.body.content )
       res.status(400).send({ message: 'Error: content is required.' });
-      return;
-    }
-    let timestamp = Date().toLocaleString();
-    req.body.Date = timestamp;
 
-    const newforum = new forum(req.body);
-    newforum.save().then((data) => {
+    const newForum = new forum({
+      title: req.body.title,
+      content: req.body.content,
+      author: req.oidc.sub,
+      date: Date.now(),
+      comments: []
+    });
+
+    newForum.save().then((data) => {
       res.status(201).send(data);
     })
     .catch((err) => {
-      res.status(500).json({message: err.message || 'An error occured.'});
+      res.status(500).json({message: err.message || 'An error occurred.'});
     });
   } catch (err) {
     res.status(500).json({message: err.message});
@@ -61,11 +69,10 @@ const getCommentFromThread = async (req, res) => {
   */
   try {
     const curr_forum = await forum.findById(req.params.forumId);
-    const curr_comment = curr_forum.find({"comment.Id": req.params.commentId})
-    if (!curr_comment) {
+    const curr_comment = curr_forum.comments.findById(req.params.commentId)
+    if (!curr_comment)
       res.status(404).json({message: "Comment does not exist."});
-      return;
-    }
+
     res.status(200).json(curr_comment);
   } catch (err) {
     res.status(500).json({message: err.message});
@@ -75,30 +82,28 @@ const getCommentFromThread = async (req, res) => {
 const postCommentOnForum = async (req, res) => {
   /*  #swagger.description = 'Posts a comment in a forum thread in the database.'
       #swagger.tags = ['Forums']
+      #swagger.parameters['obj'] = {
+        in: 'body',
+        description: 'The new comment to add to the forum post.',
+        schema: {
+          $content: 'A new comment on a forum thread.',
+        }
+      }
   }*/
   try {
-    if ( !req.body.Content || !req.body.Author ) {
+    if (!req.body.content)
       res.status(400).send({ message: 'Error: content is required.' });
-      return;
-    }
-    let timestamp = Date().toLocaleString();
 
     const new_comment = {
-      Content: req.body.Content,
-      Author: req.body.Author,
-      Date: timestamp
+      content: req.body.content,
+      author: req.oidc.sub,
+      date: Date.now()
     }
 
-    forum.update(
-      { _id: req.body.forumId }, 
-      { $push: { Comments: new_comment } },
-      done
-    ).then((data) => {
-      res.status(201).send(data);
+    forum.findOneById(req.params.forumId, function(err, forumThread){
+      forumThread.comments.push(new_comment);
+      forumThread.save().then((data) => res.status(201).send(data)).catch((err) => res.status(500).json({message: err.message || 'An error occurred.'}));
     })
-    .catch((err) => {
-      res.status(500).json({message: err.message || 'An error occured.'});
-    });
   } catch (err) {
     res.status(500).json({message: err.message});
   }
@@ -107,24 +112,31 @@ const postCommentOnForum = async (req, res) => {
 const editCommentOnForum = async (req, res) => {
   /*  #swagger.description = 'Posts a comment in a forum thread in the database.'
       #swagger.tags = ['Forums']
+      #swagger.parameters['obj'] = {
+        in: 'body',
+        description: 'The user comment to update in the database.',
+        schema: {
+          $content: 'An updated comment.',
+        }
+      }
   }*/
   try {
-    if ( !req.body.Content ) {
+    if (!req.body.content)
       res.status(400).send({ message: 'Error: content is required.' });
-      return;
-    }
 
-    forum.update(
-      { _id: req.body.forumId, "comments.Id": req.body.commentId },
-      { $set: { "Content": req.body.Content } },
-      done
-    ).then((data) => {
-      res.status(201).send(data);
+    forum.findOne({_id: req.params.forumId}, function(err, forumThread){
+      forumThread.comments.findById(req.body.commentId, function(err, oldComment){
+        if(oldComment.author != req.oidc.sub)
+          res.status(400).send({ message: 'Error: You are not allowed to edit another user\'s comment.' });
+        else {
+          oldComment.content = req.body.content;
+          oldComment.isEdited = true;
+          oldComment.save().then((data) => res.status(201).send(data)).catch((err) => res.status(500).json({message: err.message || 'An error occurred.'}));
+        }
+      });
     })
-    .catch((err) => {
-      res.status(500).json({message: err.message || 'An error occured.'});
-    });
-  } catch (err) {
+  } 
+  catch (err) {
     res.status(500).json({message: err.message});
   }
 }
@@ -134,22 +146,20 @@ const deleteCommentOnForum = async (req, res) => {
       #swagger.tags = ['Forums']
   */
   try {
-    if ( !req.body.Content || !req.body.Author ) {
-      res.status(400).send({ message: 'Error: content is required.' });
-      return;
-    }
+    if (!req.body.content)
+      res.status(400).send({message: 'Error: content is required.'});
 
-    forum.update(
-      { _id: req.body.forumId },
-      { $pull: req.body.commentId },
-      done
-    ).then((data) => {
-      res.status(201).send(data);
-    })
-    .catch((err) => {
-      res.status(500).json({message: err.message || 'An error occured.'});
+    forum.findOne({_id: req.params.forumId}, function(err, forumThread){
+      forumThread.comments.findById(req.body.commentId, function(err, oldComment){
+        if(oldComment.author != req.oidc.sub)
+          res.status(400).send({ message: 'Error: You are not allowed to delete another user\'s comment.' });
+
+        forumThread.comments.pull(oldComment);
+        forumThread.save().then((data) => res.status(201).send(data)).catch((err) => res.status(500).json({message: err.message || 'An error occurred.'}));
+      });
     });
-  } catch (err) {
+  } 
+  catch (err) {
     res.status(500).json({message: err.message});
   }
 }
@@ -157,29 +167,30 @@ const deleteCommentOnForum = async (req, res) => {
 const updateForum = async (req, res) => {
   /*  #swagger.description = 'Updates a forum post in the database.'
       #swagger.tags = ['Forums']
+      #swagger.parameters['obj'] = {
+        in: 'body',
+        description: 'The updated forum information.',
+        schema: {
+          $title: 'An Updated Forum Post Title',
+          $content: 'An updated forum post description.',
+        }
+      }
   }*/
   try {
-    if ( !req.body.Content ) {
-      res.status(400).send({ message: 'Error: content is required.' });
-      return;
-    }
-    let timestamp = Date().toLocaleString();
+    if (!req.body.title || !req.body.content)
+      res.status(400).send({ message: 'Error: content or title is required.' });
 
-    forum.update(
-      { _id: req.body.forumId },
-      { $set: {
-        "Title": req.body.Title,
-        "Content": req.body.Content,
-        "Date": timestamp
-      } },
-      done
-    ).then((data) => {
-      res.status(201).send(data);
+    forum.findOnebyId(req.params.forumId, function(err, forumThread){
+      if(forumThread.author != req.oidc.sub)
+        res.status(400).send({ message: 'Error: You are not allowed to edit another user\'s forum post.' });
+      
+      forumThread.title = req.body.title,
+      forumThread.content = req.body.content
+      forumThread.isEdited = true;
+      forumThread.save().then((data) => res.status(201).send(data)).catch((err) => res.status(500).json({message: err.message || 'An error occurred.'}));
     })
-    .catch((err) => {
-      res.status(500).json({message: err.message || 'An error occured.'});
-    });
-  } catch (err) {
+  } 
+  catch (err) {
     res.status(500).json({message: err.message});
   }
 }
@@ -189,13 +200,13 @@ const deleteForum = async (req, res) => {
       #swagger.tags = ['Forums']
   */
   try {
-    const curr_forum = await forum.findById(req.params.forumId);
-    if (!curr_forum) {
-      res.status(404).json({message: "Forum does not exist."});
-      return;
-    }
-    curr_forum.remove();
-    res.status(200).json({message: "Successfully deleted."});
+    forum.findOnebyId(req.params.forumId, function(err, forumThread){
+      if(forumThread.author != req.oidc.sub)
+        res.status(400).send({ message: 'Error: You are not allowed to delete another user\'s forum post.' });
+      
+      forumThread.remove();
+      forumThread.save().then((data) => res.status(201).send(data)).catch((err) => res.status(500).json({message: err.message || 'An error occurred.'}));
+    })
   } catch (err) {
     res.status(500).json({message: err.message});
   }
