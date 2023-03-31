@@ -126,12 +126,11 @@ const editCommentOnForum = async (req, res) => {
       res.status(400).send({ message: 'Error: content is required.' });
 
     forum.findOne({_id: req.params.forumId}, function(err, forumThread){
-      const oldComment = forumThread.comments[req.params.commentId];
-        if(oldComment.author != req.oidc.user.sub)
+        if(forumThread.comments[req.params.commentId].author != req.oidc.user.sub)
           res.status(400).send({ message: 'Error: You are not allowed to edit another user\'s comment.' });
         else {
-          oldComment.content = req.body.content;
-          oldComment.isEdited = true;
+          forumThread.comments[req.params.commentId].content = req.body.content;
+          forumThread.comments[req.params.commentId].isEdited = true;
           forumThread.save().then((data) => res.status(201).send(data)).catch((err) => res.status(500).json({message: err.message || 'An error occurred.'}));
         }
       });
