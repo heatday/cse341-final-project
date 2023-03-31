@@ -124,8 +124,7 @@ const editCommentOnForum = async (req, res) => {
   try {
     if (!req.body.content)
       res.status(400).send({ message: 'Error: content is required.' });
-    forum.findOne({"comments._id": req.params.commentId}, function(err, forumThread){
-
+    forum.findOne({"_id": req.params.forumId, "comments._id": req.params.commentId}, function(err, forumThread){
         if(forumThread.comments[0].author != req.oidc.user.sub)
           res.status(400).send({ message: 'Error: You are not allowed to edit another user\'s comment.' });
         else {
@@ -148,16 +147,14 @@ const deleteCommentOnForum = async (req, res) => {
     if (!req.body.content)
       res.status(400).send({message: 'Error: content is required.'});
 
-    forum.findOne({_id: req.params.forumId}, function(err, forumThread){
-
-      forumThread.comments.findById(req.body.commentId, function(err, oldComment){
-        if(oldComment.author != req.oidc.user.sub)
+      forum.findOne({"_id": req.params.forumId, "comments._id": req.params.commentId}, function(err, forumThread){
+        if(forumThread.comments[0].author != req.oidc.user.sub)
           res.status(400).send({ message: 'Error: You are not allowed to delete another user\'s comment.' });
-
-        forumThread.comments.pull(oldComment);
-        forumThread.save().then((data) => res.status(201).send(data)).catch((err) => res.status(500).json({message: err.message || 'An error occurred.'}));
+        else {
+          forumThread.comments.pull(0);
+          forumThread.save().then((data) => res.status(201).send(data)).catch((err) => res.status(500).json({message: err.message || 'An error occurred.'}));
+        }
       });
-    });
   } 
   catch (err) {
     res.status(500).json({message: err.message});
