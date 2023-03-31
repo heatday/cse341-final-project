@@ -4,14 +4,16 @@ const userSchema = new mongoose.Schema ({
     sub: {
     type: String,
     required: true,
-    unique: true
+    //Issues with implementation
+    //unique: true
   },
    username: {
     type: String,
     required: true,
     lowercase: true,
     trim: true,
-    unique: true
+    //Issues with implementation
+    //unique: true
   },
   bio: {
     type: String,
