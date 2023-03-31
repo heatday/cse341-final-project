@@ -144,9 +144,6 @@ const deleteCommentOnForum = async (req, res) => {
       #swagger.tags = ['Forums']
   */
   try {
-    if (!req.body.content)
-      res.status(400).send({message: 'Error: content is required.'});
-
       forum.findOne({"_id": req.params.forumId, "comments._id": req.params.commentId}, function(err, forumThread){
         if(forumThread.comments[0].author != req.oidc.user.sub)
           res.status(400).send({ message: 'Error: You are not allowed to delete another user\'s comment.' });
