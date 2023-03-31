@@ -8,7 +8,7 @@ const getLoggedInUser = async (req, res) => {
    try{
     User.findOne({sub: req.oidc.sub}, function(err, account){
       if(err) res.status(500).send({message: err.message || 'An error occurred while finding user details.'});
-      if(!user){
+      if(!account){
         res.status(200).send(JSON.stringify(req.oidc.user));
       }
       else{
