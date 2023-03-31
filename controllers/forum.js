@@ -68,7 +68,7 @@ const getCommentFromThread = async (req, res) => {
       #swagger.tags = ['Forums']
   */
   try {
-    const curr_comment = await forum.find({_id: req.params.forumId}, {"comments._id": req.params.commentId, "comments.content": 1, "comments.author": 1, "comments.date": 1, "comments.isEdited": 1});
+    const curr_comment = await (await forum.find({_id: req.params.forumId})).find({"comments._id": req.params.commentId});
     //const curr_forum = await forum.findById(req.params.forumId);
     //const curr_comment = await curr_forum.comments.findById(req.params.commentId);
     if (!curr_comment)
