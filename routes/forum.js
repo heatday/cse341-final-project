@@ -8,7 +8,7 @@ router.get('/:forumId', controller.getOne);
 router.get('/:forumId/:commentId', controller.getCommentFromThread);
 
 router.post('/', controller.postForum);
-router.post('/:forumId/:commentId', controller.postCommentOnForum);
+router.post('/:forumId', controller.postCommentOnForum);
 
 router.put('/:forumId', controller.updateForum);
 router.put('/:forumId/:commentId', controller.editCommentOnForum);

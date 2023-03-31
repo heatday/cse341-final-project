@@ -117,6 +117,38 @@
           }
         }
       },
+      "post": {
+        "tags": [
+          "Forums"
+        ],
+        "description": "Posts a comment in a forum thread in the database.",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "The new comment to add to the forum post.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string",
+                  "example": "A new comment on a forum thread."
+                }
+              },
+              "required": [
+                "content"
+              ]
+            }
+          }
+        ],
+        "responses": {}
+      },
       "put": {
         "tags": [
           "Forums"
@@ -211,44 +243,6 @@
             "description": "Internal Server Error"
           }
         }
-      },
-      "post": {
-        "tags": [
-          "Forums"
-        ],
-        "description": "Posts a comment in a forum thread in the database.",
-        "parameters": [
-          {
-            "name": "forumId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "commentId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "obj",
-            "in": "body",
-            "description": "The new comment to add to the forum post.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "content": {
-                  "type": "string",
-                  "example": "A new comment on a forum thread."
-                }
-              },
-              "required": [
-                "content"
-              ]
-            }
-          }
-        ],
-        "responses": {}
       },
       "put": {
         "tags": [
