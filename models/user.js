@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema ({
     sub: {
     type: String,
-    //Commented out for issues with OIDC
-    //required: true,
+    required: true,
     unique: true
   },
    username: {
@@ -19,8 +18,7 @@ const userSchema = new mongoose.Schema ({
   },
   joinDate: {
     type: Date,
-    //Commented out for issues where join date is not in the body
-    //required: true,
+    required: true,
   }
 });
   

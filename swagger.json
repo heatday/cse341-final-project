@@ -532,7 +532,7 @@
               "properties": {
                 "username": {
                   "type": "string",
-                  "example": "username"
+                  "example": "exampleuser"
                 },
                 "bio": {
                   "type": "string",

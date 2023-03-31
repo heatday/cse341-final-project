@@ -6,7 +6,7 @@ const getLoggedInUser = async (req, res) => {
         #swagger.security = [{ "oAuth": [] }]
     */
    try{
-    User.findOne({sub: req.oidc.sub}, function(err, account){
+    User.findOne({sub: req.oidc.user.sub}, function(err, account){
       if(err) res.status(500).send({message: err.message || 'An error occurred while finding user details.'});
       if(!account){
         res.status(200).send(JSON.stringify(req.oidc.user));
@@ -57,14 +57,14 @@ const createUser = async (req, res) => {
         in: 'body',
         description: 'The user account information to add to the database.',
         schema: {
-          $username: 'username',
+          $username: 'exampleuser',
           bio: 'A biography.',
         }
       }
   */
  try{
   const newUser = new User({
-    sub: req.oidc.sub, 
+    sub: req.oidc.user.sub, 
     username: req.body.username, 
     bio: req.body.bio, 
     joinDate: Date.now()
@@ -91,7 +91,7 @@ const updateUser = async (req, res) => {
         }
       }
   */
-      User.findOne({sub: req.oidc.sub}, function(err, account){
+      User.findOne({sub: req.oidc.user.sub}, function(err, account){
         if(err) res.status(500).send({message: err.message || 'An error occurred while finding user details.'});
         if(!account){
           res.status(500).send('This user does not exist.');
@@ -112,7 +112,7 @@ const deleteUser = async (req, res) => {
       #swagger.security = [{ "oAuth": [] }]
   */
       try {
-        User.deleteOne({sub: req.oidc.sub}, function (err, result) {
+        User.deleteOne({sub: req.oidc.user.sub}, function (err, result) {
           if (err) 
             res.status(500).json(err || 'An error occurred while deleting the account.');
           else
