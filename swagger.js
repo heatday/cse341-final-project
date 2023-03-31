@@ -23,7 +23,7 @@ const doc = {
     oAuth: {
       type: 'oauth2',
       description: 'The authorization method used by this backend runs on Auth0.',
-      authorizationUrl: 'https://RENDER-URL-HERE/login',
+      authorizationUrl: 'https://cse341-final-project-26gf.onrender.com/login',
       flow: 'authorizationCode'
     }
   },

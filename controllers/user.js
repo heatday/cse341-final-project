@@ -37,13 +37,12 @@ const getPublicUser = async (req, res) => {
   //NOTE: User Information will also include information from OpenIDConnect when implemented.
       try{
         User.findOne({username: req.params.username}, function(err, account){
-          if(err) res.status(500).send({message: err.message || 'An error occurred while finding user details.'});
-          if(!account){
-            res.status(200).send(JSON.stringify(req.oidc.user));
-          }
-          else{
+          if(err) 
+            res.status(500).send({message: err.message || 'An error occurred while finding user details.'});
+          if(!account)
+            res.status(500).send({message: err.message || 'User not found.'});
+          else
             res.status(200).send(JSON.stringify(account));
-          }
         });
       }
       catch (err){
@@ -52,7 +51,7 @@ const getPublicUser = async (req, res) => {
 }
 
 const createUser = async (req, res) => {
-  /*  #swagger.description = 'Creates a user account and stores it in the database. NOTE: Password and name will be authenticated using OpenIDConnect/Auth0. We will NOT store passwords in our database.'
+  /*  #swagger.description = 'Creates a user account and stores it in the database. NOTE: Password and name will be authenticated using OpenIDConnect/Auth0. We do NOT store passwords in our database.'
       #swagger.tags = ['Users']
       #swagger.parameters['obj'] = {
         in: 'body',
@@ -63,13 +62,18 @@ const createUser = async (req, res) => {
         }
       }
   */
+ try{
   const newUser = new User({sub: req.oidc.sub, username: req.body.username, bio: req.body.bio, joinDate: Date.now()});
   newUser.save().then((account) => { console.log(account); })
-  .catch((err) => {res.status(500).send('An error ocurred.')});
+  .catch((err) => {res.status(500).send(err)});
+ }
+ catch (err){
+  res.status(500).json(err);
+ }
 }
 
 const updateUser = async (req, res) => {
-  /*  #swagger.description = 'Updates the logged in user's information in the database. NOTE: Password and name will be authenticated using OpenIDConnect/Auth0. We will NOT store passwords in our database.'
+  /*  #swagger.description = 'Updates the logged in user's information in the database. NOTE: Password and name will be authenticated using OpenIDConnect/Auth0. We do NOT store passwords in our database.'
       #swagger.tags = ['Users']
       #swagger.security = [{ "oAuth": [] }]
       #swagger.parameters['obj'] = {

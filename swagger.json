@@ -28,7 +28,7 @@
     "oAuth": {
       "type": "oauth2",
       "description": "The authorization method used by this backend runs on Auth0.",
-      "authorizationUrl": "https://RENDER-URL-HERE/login",
+      "authorizationUrl": "https://cse341-final-project-26gf.onrender.com/login",
       "flow": "authorizationCode"
     }
   },
@@ -521,7 +521,7 @@
         "tags": [
           "Users"
         ],
-        "description": "Creates a user account and stores it in the database. NOTE: Password and name will be authenticated using OpenIDConnect/Auth0. We will NOT store passwords in our database.",
+        "description": "Creates a user account and stores it in the database. NOTE: Password and name will be authenticated using OpenIDConnect/Auth0. We do NOT store passwords in our database.",
         "parameters": [
           {
             "name": "obj",

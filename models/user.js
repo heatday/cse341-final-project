@@ -4,10 +4,14 @@ const userSchema = new mongoose.Schema ({
     sub: {
     type: String,
     required: true,
+    unique: true
   },
    username: {
     type: String,
     required: true,
+    lowercase: true,
+    trim: true,
+    unique: true
   },
   bio: {
     type: String,
