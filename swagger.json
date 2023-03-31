@@ -40,7 +40,14 @@
         ],
         "description": "Returns all forum posts from the database.",
         "parameters": [],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       },
       "post": {
         "tags": [
@@ -51,43 +58,37 @@
           {
             "name": "obj",
             "in": "body",
-            "description": "The new forum thread to add to the database.",
+            "description": "The new forum post to add to the database.",
             "schema": {
               "type": "object",
               "properties": {
                 "title": {
                   "type": "string",
-                  "example": "Forum Name"
+                  "example": "A Title for the Forum"
                 },
-                "category": {
+                "content": {
                   "type": "string",
-                  "example": "Forum Category"
-                },
-                "desc": {
-                  "type": "string",
-                  "example": "A lengthy forum post."
-                },
-                "comments": {
-                  "type": "array",
-                  "example": [],
-                  "items": {}
+                  "example": "The forum post text."
                 }
               },
               "required": [
                 "title",
-                "category",
-                "desc",
-                "comments"
+                "content"
               ]
             }
           }
         ],
-        "responses": {},
-        "security": [
-          {
-            "oAuth": []
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
-        ]
+        }
       }
     },
     "/forum/{forumId}": {
@@ -101,11 +102,20 @@
             "name": "forumId",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "The forum ID for the database to retrieve"
+            "type": "string"
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       },
       "put": {
         "tags": [
@@ -117,43 +127,32 @@
             "name": "forumId",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "The forum post ID for the database to update."
+            "type": "string"
           },
           {
             "name": "obj",
             "in": "body",
-            "description": "The new forum thread to add to the database.",
+            "description": "The updated forum information.",
             "schema": {
               "type": "object",
               "properties": {
                 "title": {
                   "type": "string",
-                  "example": "Forum Name"
+                  "example": "An Updated Forum Post Title"
                 },
-                "category": {
+                "content": {
                   "type": "string",
-                  "example": "Forum Category"
-                },
-                "desc": {
-                  "type": "string",
-                  "example": "A lengthy forum post."
+                  "example": "An updated forum post description."
                 }
               },
               "required": [
                 "title",
-                "category",
-                "desc"
+                "content"
               ]
             }
           }
         ],
-        "responses": {},
-        "security": [
-          {
-            "oAuth": []
-          }
-        ]
+        "responses": {}
       },
       "delete": {
         "tags": [
@@ -165,16 +164,20 @@
             "name": "forumId",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "The forum thread ID for the database to delete."
+            "type": "string"
           }
         ],
-        "responses": {},
-        "security": [
-          {
-            "oAuth": []
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
-        ]
+        }
       }
     },
     "/forum/{forumId}/{commentId}": {
@@ -188,18 +191,26 @@
             "name": "forumId",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "The forum ID for the database to retrieve"
+            "type": "string"
           },
           {
             "name": "commentId",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "The comment ID for the database to retrieve"
+            "type": "string"
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       },
       "post": {
         "tags": [
@@ -211,8 +222,7 @@
             "name": "forumId",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "The forum ID to add the comment to."
+            "type": "string"
           },
           {
             "name": "commentId",
@@ -223,27 +233,22 @@
           {
             "name": "obj",
             "in": "body",
-            "description": "The new comment to add to the forum thread.",
+            "description": "The new comment to add to the forum post.",
             "schema": {
               "type": "object",
               "properties": {
-                "comment": {
+                "content": {
                   "type": "string",
-                  "example": "A lengthy comment."
+                  "example": "A new comment on a forum thread."
                 }
               },
               "required": [
-                "comment"
+                "content"
               ]
             }
           }
         ],
-        "responses": {},
-        "security": [
-          {
-            "oAuth": []
-          }
-        ]
+        "responses": {}
       },
       "put": {
         "tags": [
@@ -255,40 +260,33 @@
             "name": "forumId",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "The forum ID the comment is part of."
+            "type": "string"
           },
           {
             "name": "commentId",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "The comment ID for the database to edit."
+            "type": "string"
           },
           {
             "name": "obj",
             "in": "body",
-            "description": "The edited comment to update the forum thread.",
+            "description": "The user comment to update in the database.",
             "schema": {
               "type": "object",
               "properties": {
-                "comment": {
+                "content": {
                   "type": "string",
-                  "example": "An updated lengthy comment."
+                  "example": "An updated comment."
                 }
               },
               "required": [
-                "comment"
+                "content"
               ]
             }
           }
         ],
-        "responses": {},
-        "security": [
-          {
-            "oAuth": []
-          }
-        ]
+        "responses": {}
       },
       "delete": {
         "tags": [
@@ -300,23 +298,41 @@
             "name": "forumId",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "The forum ID the offending comment is part of."
+            "type": "string"
           },
           {
             "name": "commentId",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "The comment ID for the database to delete."
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "example": "any"
+                },
+                "commentId": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
-        "responses": {},
-        "security": [
-          {
-            "oAuth": []
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
-        ]
+        }
       }
     },
     "/plants/": {
@@ -370,13 +386,16 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "500": {
             "description": "Internal Server Error"
           }
         }
       }
     },
-    "/plants/{plantid}": {
+    "/plants/{plantId}": {
       "get": {
         "tags": [
           "Plant Information"
@@ -384,7 +403,7 @@
         "description": "Returns one plant description from the database.",
         "parameters": [
           {
-            "name": "plantid",
+            "name": "plantId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -401,9 +420,7 @@
             "description": "Internal Server Error"
           }
         }
-      }
-    },
-    "/plants/{plantId}": {
+      },
       "put": {
         "tags": [
           "Plant Information"
@@ -442,6 +459,9 @@
           "204": {
             "description": "No Content"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found"
           },
@@ -467,6 +487,9 @@
           "200": {
             "description": "OK"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found"
           },
@@ -483,7 +506,11 @@
         ],
         "description": "Returns the logged in user",
         "parameters": [],
-        "responses": {},
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
         "security": [
           {
             "oAuth": []
@@ -539,7 +566,7 @@
               "properties": {
                 "userName": {
                   "type": "string",
-                  "example": "username"
+                  "example": "updatedUsername"
                 },
                 "bio": {
                   "type": "string",
@@ -555,6 +582,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "500": {
             "description": "Internal Server Error"
@@ -575,6 +605,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "500": {
             "description": "Internal Server Error"

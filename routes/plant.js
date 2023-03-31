@@ -4,7 +4,7 @@ const safecheck = require('../middleware/authorization.js');
 const controller = require('../controllers/plant');
 
 router.get('/', controller.getAll);
-router.get('/:plantid', controller.getOne);
+router.get('/:plantId', controller.getOne);
 
 router.post('/', safecheck.authorize, controller.uploadPlant);
 

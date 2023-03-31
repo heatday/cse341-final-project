@@ -5,21 +5,18 @@ const getLoggedInUser = async (req, res) => {
         #swagger.tags = ['Users']
         #swagger.security = [{ "oAuth": [] }]
     */
-
-   //NOTE: User Information will also include information from OpenIDConnect when implemented.
-   //NOTE: Until Auth0 is implemented, this will just retrieve the first user in the collection.
    try{
-    User.findOne({}, function(err, account){
+    User.findOne({sub: req.oidc.sub}, function(err, account){
       if(err) res.status(500).send({message: err.message || 'An error occurred while finding user details.'});
       if(!user){
         res.status(200).send(JSON.stringify(req.oidc.user));
       }
       else{
-        //When updating this to support OAuth, the commented out code may be used to append information from OpenIDConnect.
-
-        //const userDetails = req.oidc.user;
-        //userDetails.username = user.username;
-        res.status(200).send(JSON.stringify(account));
+        const userDetails = req.oidc.user;
+        userDetails.username = account.username;
+        userDetails.bio = account.bio;
+        userDetails.joinDate = account.joinDate;
+        res.status(200).send(JSON.stringify(userDetails));
       }
     });
   }
@@ -45,10 +42,6 @@ const getPublicUser = async (req, res) => {
             res.status(200).send(JSON.stringify(req.oidc.user));
           }
           else{
-            //When updating this to support OAuth, the commented out code may be used to append information from OpenIDConnect.
-
-            //const userDetails = req.oidc.user;
-            //userDetails.username = user.username;
             res.status(200).send(JSON.stringify(account));
           }
         });
@@ -70,8 +63,7 @@ const createUser = async (req, res) => {
         }
       }
   */
-  const fakeSub = generateFakeSub(16);
-  const newUser = new User({sub: fakeSub, username: req.body.username, bio: req.body.bio});
+  const newUser = new User({sub: req.oidc.sub, username: req.body.username, bio: req.body.bio, joinDate: Date.now()});
   newUser.save().then((account) => { console.log(account); })
   .catch((err) => {res.status(500).send('An error ocurred.')});
 }
@@ -84,21 +76,20 @@ const updateUser = async (req, res) => {
         in: 'body',
         description: 'The user account information to update in the database.',
         schema: {
-          $userName: 'username',
+          $userName: 'updatedUsername',
           bio: 'An updated biography.',
         }
       }
   */
-      User.findOne({username: req.body.username}, function(err, account){
+      User.findOne({sub: req.oidc.sub}, function(err, account){
         if(err) res.status(500).send({message: err.message || 'An error occurred while finding user details.'});
         if(!account){
           res.status(500).send('This user does not exist.');
         }
         else{
-          //Store listing in existing account
           account.bio = req.body.bio;
-          //Commented out, will use when OIDC is implemented.
-          //account.username = req.body.username;
+          account.username = req.body.username;
+
           account.save().then((dataAccount) => { console.log(dataAccount); })
           .catch((err) => {res.status(500).send('An error ocurred.')});
         }
@@ -110,11 +101,8 @@ const deleteUser = async (req, res) => {
       #swagger.tags = ['Users']
       #swagger.security = [{ "oAuth": [] }]
   */
-
-  //NOTE: Since OAuth isn't implemented yet, you need to use a URL parameter for now.
-
       try {
-        User.deleteOne({username: req.params.username}, function (err, result) {
+        User.deleteOne({sub: req.oidc.sub}, function (err, result) {
           if (err) 
             res.status(500).json(err || 'An error occurred while deleting the account.');
           else
@@ -123,19 +111,6 @@ const deleteUser = async (req, res) => {
       } catch (err) {
         res.status(500).json(err || 'An error occurred while deleting the account.');
       }
-}
-
-function generateFakeSub(length) {
-  // Lifted from: https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
-  let counter = 0;
-  while (counter < length) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    counter += 1;
-  }
-  return result;
 }
 
 module.exports = {getLoggedInUser, getPublicUser, createUser, updateUser, deleteUser};
