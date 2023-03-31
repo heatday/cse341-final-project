@@ -63,7 +63,13 @@ const createUser = async (req, res) => {
       }
   */
  try{
-  const newUser = new User({sub: req.oidc.sub, username: req.body.username, bio: req.body.bio, joinDate: Date.now()});
+  const newUser = new User({
+    sub: req.oidc.sub, 
+    username: req.body.username, 
+    bio: req.body.bio, 
+    joinDate: Date.now()
+  });
+
   newUser.save().then((account) => { console.log(account); })
   .catch((err) => {res.status(500).send(err)});
  }

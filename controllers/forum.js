@@ -1,4 +1,4 @@
-const forum = require('../models/forum')
+const forum = require('../models/forum');
 
 const getAll = async (req, res) => {
   /*  #swagger.description = 'Returns all forum posts from the database.'
