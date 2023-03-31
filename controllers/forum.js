@@ -111,7 +111,7 @@ const postCommentOnForum = async (req, res) => {
 }
 
 const editCommentOnForum = async (req, res) => {
-  /*  #swagger.description = 'Posts a comment in a forum thread in the database.'
+  /*  #swagger.description = 'Edits a comment in a forum thread in the database.'
       #swagger.tags = ['Forums']
       #swagger.parameters['obj'] = {
         in: 'body',
@@ -125,17 +125,15 @@ const editCommentOnForum = async (req, res) => {
     if (!req.body.content)
       res.status(400).send({ message: 'Error: content is required.' });
 
-    forum.findOne({_id: req.params.forumId}, function(err, forumThread){
-      forumThread.comments.findById(req.body.commentId, function(err, oldComment){
-        if(oldComment.author != req.oidc.user.sub)
+    forum.findOne({_id: req.params.forumId, "comments._id": req.params.commentId}, function(err, oldComment){
+      if(oldComment.author != req.oidc.user.sub)
           res.status(400).send({ message: 'Error: You are not allowed to edit another user\'s comment.' });
         else {
           oldComment.content = req.body.content;
           oldComment.isEdited = true;
           oldComment.save().then((data) => res.status(201).send(data)).catch((err) => res.status(500).json({message: err.message || 'An error occurred.'}));
         }
-      });
-    })
+    });
   } 
   catch (err) {
     res.status(500).json({message: err.message});

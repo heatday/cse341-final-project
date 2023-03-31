@@ -248,7 +248,7 @@
         "tags": [
           "Forums"
         ],
-        "description": "Posts a comment in a forum thread in the database.",
+        "description": "Edits a comment in a forum thread in the database.",
         "parameters": [
           {
             "name": "forumId",
