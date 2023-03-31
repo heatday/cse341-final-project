@@ -68,8 +68,9 @@ const getCommentFromThread = async (req, res) => {
       #swagger.tags = ['Forums']
   */
   try {
-    const curr_forum = await forum.findById(req.params.forumId);
-    const curr_comment = curr_forum.comments.findById(req.params.commentId)
+    const curr_comment = await forum.find({_id: req.params.forumId}, {"comments._id": req.params.commentId});
+    //const curr_forum = await forum.findById(req.params.forumId);
+    //const curr_comment = await curr_forum.comments.findById(req.params.commentId);
     if (!curr_comment)
       res.status(404).json({message: "Comment does not exist."});
 
