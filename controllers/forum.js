@@ -100,7 +100,7 @@ const postCommentOnForum = async (req, res) => {
       date: Date.now()
     }
 
-    forum.findOneById(req.params.forumId, function(err, forumThread){
+    forum.findById(req.params.forumId, function(err, forumThread){
       forumThread.comments.push(new_comment);
       forumThread.save().then((data) => res.status(201).send(data)).catch((err) => res.status(500).json({message: err.message || 'An error occurred.'}));
     })
@@ -180,7 +180,7 @@ const updateForum = async (req, res) => {
     if (!req.body.title || !req.body.content)
       res.status(400).send({ message: 'Error: content or title is required.' });
 
-    forum.findOnebyId(req.params.forumId, function(err, forumThread){
+    forum.findById(req.params.forumId, function(err, forumThread){
       if(forumThread.author != req.oidc.user.sub)
         res.status(400).send({ message: 'Error: You are not allowed to edit another user\'s forum post.' });
       
@@ -200,7 +200,7 @@ const deleteForum = async (req, res) => {
       #swagger.tags = ['Forums']
   */
   try {
-    forum.findOnebyId(req.params.forumId, function(err, forumThread){
+    forum.findById(req.params.forumId, function(err, forumThread){
       if(forumThread.author != req.oidc.user.sub)
         res.status(400).send({ message: 'Error: You are not allowed to delete another user\'s forum post.' });
       
