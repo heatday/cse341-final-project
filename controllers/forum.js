@@ -148,7 +148,7 @@ const deleteCommentOnForum = async (req, res) => {
         if(forumThread.comments[0].author != req.oidc.user.sub)
           res.status(400).send({ message: 'Error: You are not allowed to delete another user\'s comment.' });
         else {
-          forumThread.comments.pull(0);
+          forumThread.comments.pull(req.params.commentId);
           forumThread.save().then((data) => res.status(201).send(data)).catch((err) => res.status(500).json({message: err.message || 'An error occurred.'}));
         }
       });
