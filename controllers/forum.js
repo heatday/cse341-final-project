@@ -47,7 +47,7 @@ const postForum = async (req, res) => {
     const newForum = new forum({
       title: req.body.title,
       content: req.body.content,
-      author: req.oidc.sub,
+      author: req.oidc.user.sub,
       date: Date.now(),
       comments: []
     });
@@ -96,7 +96,7 @@ const postCommentOnForum = async (req, res) => {
 
     const new_comment = {
       content: req.body.content,
-      author: req.oidc.sub,
+      author: req.oidc.user.sub,
       date: Date.now()
     }
 
@@ -126,7 +126,7 @@ const editCommentOnForum = async (req, res) => {
 
     forum.findOne({_id: req.params.forumId}, function(err, forumThread){
       forumThread.comments.findById(req.body.commentId, function(err, oldComment){
-        if(oldComment.author != req.oidc.sub)
+        if(oldComment.author != req.oidc.user.sub)
           res.status(400).send({ message: 'Error: You are not allowed to edit another user\'s comment.' });
         else {
           oldComment.content = req.body.content;
@@ -151,7 +151,7 @@ const deleteCommentOnForum = async (req, res) => {
 
     forum.findOne({_id: req.params.forumId}, function(err, forumThread){
       forumThread.comments.findById(req.body.commentId, function(err, oldComment){
-        if(oldComment.author != req.oidc.sub)
+        if(oldComment.author != req.oidc.user.sub)
           res.status(400).send({ message: 'Error: You are not allowed to delete another user\'s comment.' });
 
         forumThread.comments.pull(oldComment);
@@ -181,7 +181,7 @@ const updateForum = async (req, res) => {
       res.status(400).send({ message: 'Error: content or title is required.' });
 
     forum.findOnebyId(req.params.forumId, function(err, forumThread){
-      if(forumThread.author != req.oidc.sub)
+      if(forumThread.author != req.oidc.user.sub)
         res.status(400).send({ message: 'Error: You are not allowed to edit another user\'s forum post.' });
       
       forumThread.title = req.body.title,
@@ -201,7 +201,7 @@ const deleteForum = async (req, res) => {
   */
   try {
     forum.findOnebyId(req.params.forumId, function(err, forumThread){
-      if(forumThread.author != req.oidc.sub)
+      if(forumThread.author != req.oidc.user.sub)
         res.status(400).send({ message: 'Error: You are not allowed to delete another user\'s forum post.' });
       
       forumThread.remove();
