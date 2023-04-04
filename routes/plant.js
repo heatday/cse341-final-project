@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
-
+const safecheck = require('../middleware/authorization.js');
 const controller = require('../controllers/plant');
 
 router.get('/', controller.getAll);
-router.get('/:plantid', controller.getOne);
+router.get('/:plantId', controller.getOne);
 
-router.post('/', controller.uploadPlant);
+router.post('/', safecheck.authorize, controller.uploadPlant);
 
-router.put('/:plantId', controller.updatePlant);
+router.put('/:plantId', safecheck.authorize, controller.updatePlant);
 
-router.delete('/:plantId', controller.deletePlant);
+router.delete('/:plantId', safecheck.authorize, controller.deletePlant);
 
 module.exports = router;

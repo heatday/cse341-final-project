@@ -9,6 +9,30 @@ const mongodb = require('./db/connect');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 const mongoose = require('mongoose');
+const { auth, requiresAuth } = require('express-openid-connect');
+
+//oauth configuration
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: process.env.SECRET,
+  baseURL: process.env.BASE_URL,
+  clientID: process.env.CLIENT_ID,
+  issuerBaseURL: process.env.ISSUER_BASE_URL
+};
+
+app.use(auth(config));
+
+// Message when you are logged in or logged out
+app.get('/', (req, res) => {
+  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+});
+
+// Check our profile information when logged in
+app.get('/myaccount', requiresAuth(), (req, res) => {
+  console.log(JSON.stringify(req.oidc.user))
+  res.send(JSON.stringify(req.oidc.user));
+}) 
 
 mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true});
 const db  = mongoose.connection;
