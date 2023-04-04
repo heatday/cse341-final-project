@@ -4,12 +4,13 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
+    "test": "jest",
+    "start": "node server.js",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "swagger": "node ./swagger.js"
+    
   },
   "author": "",
   "license": "ISC",
@@ -37,5 +38,8 @@
     "eslint-plugin-react": "^7.31.11",
     "nodemon": "^2.0.20",
     "prettier": "^2.5.1"
+  },
+  "jest": {
+    "preset": "@shelf/jest-mongodb"
   }
 }
