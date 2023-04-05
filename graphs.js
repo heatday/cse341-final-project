@@ -1,6 +1,6 @@
 const {GraphQLSchema, GraphQLObjectType, GraphQLBoolean, GraphQLNonNull, GraphQLID, GraphQLString, GraphQLInt, GraphQLScalarType, GraphQLList, GraphQLInputObjectType, GraphQLEnumType} = require("graphql");
 const plant = require("./models/plant");
-const forum = require('./models/forum');
+
 
 
 
