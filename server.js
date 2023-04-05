@@ -10,6 +10,9 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 const mongoose = require('mongoose');
 const { auth, requiresAuth } = require('express-openid-connect');
+const {graphqlHTTP} = require('express-graphql');
+const schema = require('./graphs');
+
 
 //oauth configuration
 const config = {
@@ -27,6 +30,13 @@ app.use(auth(config));
 app.get('/', (req, res) => {
   res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
 });
+
+//graphql part
+app.use('/graphql', graphqlHTTP({
+  schema,
+  pretty: true,
+  graphiql: true,
+}));
 
 // Check our profile information when logged in
 app.get('/myaccount', requiresAuth(), (req, res) => {

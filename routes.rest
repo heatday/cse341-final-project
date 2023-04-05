@@ -109,3 +109,16 @@ DELETE  HTTP/1.1
 
 
 
+//
+
+//
+//query plant {
+  plant {
+    _id
+    NamePlant
+    Description
+    Type_of_tree
+    gender_of_tree
+  }
+//}
+//

@@ -1,5 +1,6 @@
 const app = require('../app')
 const { expect } = require('@jest/globals');
+var request = require('request');
 
 //test for the user 
 
@@ -19,14 +20,15 @@ describe('Test Handlers', () => {
 
 describe('Test Handlers', () => {
     test('responds to post /user', async () => {
-        const res = await request.post('/user').send(    {
+        const res = await request.post('/user').send(      {
             sub: "some test",
             username: "Tgenius",
             bio: "some just test"
-            
+           
         });
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(201)
+        
     })
 
     
@@ -58,3 +60,4 @@ describe('Test Handlers', () => {
         expect(res.statusCode).toBe(200)
     })
 })
+
