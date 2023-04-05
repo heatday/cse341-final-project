@@ -2,10 +2,10 @@ const {GraphQLSchema, GraphQLObjectType, GraphQLBoolean, GraphQLNonNull, GraphQL
 
 const forum = require("./models/forum");
 const plant = require("./models/plant");
-<<<<<<< HEAD
-=======
 
->>>>>>> 249c8bd7d9e5742ac2aa685d4968cb9361968c01
+
+
+
 
 
 
