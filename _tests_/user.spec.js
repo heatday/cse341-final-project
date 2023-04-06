@@ -6,13 +6,13 @@ const { expect } = require('@jest/globals');
 describe('Test Handlers', () => {
     test('responds to /', async () => {
         const res = await request.get('/');
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.headers).toBe('application/json;');
         expect(res.statusCode).toBe(200)
     })
 
     test('responds to /user', async () => {
         const res = await request.get('/user');
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.headers).toBe('application/json;');
         expect(res.statusCode).toBe(200)
     })
 })
@@ -25,7 +25,7 @@ describe('Test Handlers', () => {
             bio: "some just test"
             
         });
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.headers).toBe('application/json;');
         expect(res.statusCode).toBe(201)
     })
 
