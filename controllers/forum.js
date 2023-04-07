@@ -39,6 +39,7 @@ const postForum = async (req, res) => {
           $content: 'The forum post text.'
         }
       }
+      #swagger.security = [{ "oAuth": [] }]
   */
   try {
     if ( !req.body.title || !req.body.content )
@@ -90,6 +91,7 @@ const postCommentOnForum = async (req, res) => {
           $content: 'A new comment on a forum thread.',
         }
       }
+      #swagger.security = [{ "oAuth": [] }]
   }*/
   try {
     if (!req.body.content)
@@ -120,6 +122,7 @@ const editCommentOnForum = async (req, res) => {
           $content: 'An updated comment.',
         }
       }
+      #swagger.security = [{ "oAuth": [] }]
   }*/
   try {
     if (!req.body.content)
@@ -142,6 +145,7 @@ const editCommentOnForum = async (req, res) => {
 const deleteCommentOnForum = async (req, res) => {
   /*  #swagger.description = 'Deletes a comment from a forum thread.'
       #swagger.tags = ['Forums']
+      #swagger.security = [{ "oAuth": [] }]
   */
   try {
       forum.findOne({"_id": req.params.forumId, "comments._id": req.params.commentId}, function(err, forumThread){
@@ -169,6 +173,7 @@ const updateForum = async (req, res) => {
           $content: 'An updated forum post description.',
         }
       }
+      #swagger.security = [{ "oAuth": [] }]
   }*/
   try {
     if (!req.body.title || !req.body.content)
@@ -192,6 +197,7 @@ const updateForum = async (req, res) => {
 const deleteForum = async (req, res) => {
   /*  #swagger.description = 'Deletes a forum thread from the database.'
       #swagger.tags = ['Forums']
+      #swagger.security = [{ "oAuth": [] }]
   */
   try {
     forum.findById(req.params.forumId, function(err, forumThread){
