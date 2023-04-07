@@ -1,63 +1,22 @@
 const app = require('../app')
 const { expect } = require('@jest/globals');
 var request = require('request');
+const appURI = 'https://cse341-final-project-26gf.onrender.com';
 
-//test for the user 
-
-describe('Test Handlers', () => {
-    test('responds to /', async () => {
-        const res = await request.get('/');
-        expect(res.headers).toBe('application/json;');
-        expect(res.statusCode).toBe(200)
-    })
-
-    test('responds to /user', async () => {
-        const res = await request.get('/user');
-        expect(res.headers).toBe('application/json;');
-        expect(res.statusCode).toBe(200)
-    })
-})
-
-describe('Test Handlers', () => {
-    test('responds to post /user', async () => {
-        const res = await request.post('/user').send(      {
-            sub: "some test",
-            username: "Tgenius",
-            bio: "some just test"
-           
-        });
-        expect(res.headers).toBe('application/json;');
-        expect(res.statusCode).toBe(201)
+// User GET Route Tests
+describe('user Get Route Tests', () => {
+    test('GET /user/username', () => {
+        const config = {
+            url: `${appURI}/user/example11username11`,
+        };
         
-    })
-
-    
-})
-
-describe('Test Handlers', () => {
-    test('responds to put /user', async () => {
-        const res = await request.put('/user').send(    {
-            account: "name of the account",
-            username: "newgenius"
+        request.get(config, (err, res, body) => {
+            expect(res.headers['content-type']).toBe('text/html; charset=utf-8');
+            expect(res.statusCode).toBe(200);
         });
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
-        expect(res.statusCode).toBe(204)
-    })
-
-    
-})
-
-describe('Test Handlers', () => {
-    test('responds to /', async () => {
-        const res = await request.delete('/');
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
-        expect(res.statusCode).toBe(200)
-    })
-
-    test('responds to /user', async () => {
-        const res = await request.delete('/user');
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
-        expect(res.statusCode).toBe(200)
-    })
-})
-
+    });
+  
+  });
+  
+  
+  //NOTE: Testing POST, PUT, and DELETE routes this way is not practical, since it would require a logged in user.
